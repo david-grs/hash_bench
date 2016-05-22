@@ -71,7 +71,7 @@ public:
     }
 
 	size_type size() const { return std::accumulate(m_buckets.begin(), m_buckets.end(), 0, [](size_type s, const bucket& b) { return s + b.size(); }); }
-	size_type buckets() const { return m_buckets.size(); }
+	size_type bucket_count() const { return m_buckets.size(); }
 
 	template <typename F>
 	void visit(F&& f)

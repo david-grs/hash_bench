@@ -58,7 +58,7 @@ void add_to_benchmark(geiger::suite<Args...>& s)
 {
     auto m = prepare_map<_MapT>();
     char* test_name = __cxxabiv1::__cxa_demangle(typeid(_MapT).name(), nullptr, nullptr, nullptr);
-    
+    //std::cout << test_name << " " << m.bucket_count() << std::endl;
 
     s.add(test_name, [m = std::move(m)]()
     {
