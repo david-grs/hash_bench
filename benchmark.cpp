@@ -3,9 +3,9 @@
 
 #include <geiger/geiger.h>
 
-#include <map>
-#include <unordered_map>
-#include <google/dense_hash_map>
+#include <set>
+#include <unordered_set>
+#include <google/dense_hash_set>
 
 #include <cxxabi.h>
 
@@ -28,7 +28,7 @@ _MapT prepare_map()
 {
     _MapT m;
     for (const auto& v : get_dict_words())
-        m.insert(std::make_pair(v, 0));
+        m.insert(v);
     return m;
 }
 
@@ -36,6 +36,18 @@ template <>
 hov_set<std::string> prepare_map<hov_set<std::string>>()
 {
     hov_set<std::string> m;
+    for (const auto& v : get_dict_words())
+        m.insert(v);
+    return m;
+}
+
+template <>
+google::dense_hash_set<std::string> prepare_map<google::dense_hash_set<std::string>>()
+{
+    google::dense_hash_set<std::string> m;
+    m.set_empty_key("");
+    m.set_deleted_key("-");
+
     for (const auto& v : get_dict_words())
         m.insert(v);
     return m;
@@ -67,11 +79,10 @@ int main()
     geiger::suite<> s;
     s.set_printer<geiger::printer::console<>>();
 
-    add_to_benchmark<std::map<std::string, int>>(s);
-    add_to_benchmark<std::unordered_map<std::string, int>>(s);
-    //add_to_benchmark<google::dense_hash_map<std::string, int>>(s);
+    add_to_benchmark<std::set<std::string>>(s);
+    add_to_benchmark<std::unordered_set<std::string>>(s);
+    add_to_benchmark<google::dense_hash_set<std::string>>(s);
     add_to_benchmark<hov_set<std::string>>(s);
-
     s.run();
 
 	return 0;
