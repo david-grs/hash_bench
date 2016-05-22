@@ -1,6 +1,6 @@
 #include "futils.h"
 #include "hot_set.h"
-
+#include "ht_chained.h"
 #include <geiger/geiger.h>
 
 #include <set>
@@ -57,8 +57,9 @@ template <typename _MapT, typename... Args>
 void add_to_benchmark(geiger::suite<Args...>& s)
 {
     auto m = prepare_map<_MapT>();
-
     char* test_name = __cxxabiv1::__cxa_demangle(typeid(_MapT).name(), nullptr, nullptr, nullptr);
+    
+
     s.add(test_name, [m = std::move(m)]()
     {
         const auto& values = get_dict_words();
@@ -83,6 +84,7 @@ int main()
     add_to_benchmark<std::unordered_set<std::string>>(s);
     add_to_benchmark<google::dense_hash_set<std::string>>(s);
     add_to_benchmark<hov_set<std::string>>(s);
+    add_to_benchmark<ht_chained<std::string>>(s);
     s.run();
 
 	return 0;
