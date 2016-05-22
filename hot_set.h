@@ -1,3 +1,8 @@
+//
+// Author: Brent Friedman 	
+// https://github.com/schmaltzlicker/SG14
+//
+
 #pragma once
 #include <utility>
 #include <memory>
