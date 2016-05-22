@@ -130,14 +130,14 @@ class hot_set
 		}
 		mbegin = b;
 		mend = e;
-		allocator.deallocate(oldbegin, oldend-oldbegin);		
+		allocator.deallocate(oldbegin, oldend-oldbegin);
 	}
 	void remove_internal(T* first_, T* element_, T* last_)
 	{
 		--moccupied;
 		auto tomb = tomb_gen();
 		*element_ = tomb;
-		
+
 		//rehash elements that may have collided
 		probe(first_, element_, last_, [&](T& value)
 		{
@@ -273,7 +273,6 @@ public:
 		, mend(in.mend)
 		, mcapacity(in.mcapacity)
 		, moccupied(in.moccupied)
-		, Alloc(std::move(in))
 		, hash(std::move(in.hash))
 		, load_alg(std::move(in.load_alg))
 		, eq(std::move(in.eq))
@@ -288,8 +287,8 @@ public:
 		: hash(std::move(hash_))
 		, load_alg(std::move(load_))
 		, eq(std::move(equal_))
+        , tomb_gen(std::move(tombstone_))
 		, allocator(std::move(alloc_))
-		, tomb_gen(std::move(tombstone_))
 		, moccupied(0)
 		, mcapacity(0)
 		, mbegin(nullptr)
@@ -530,7 +529,7 @@ namespace std
 
 template<
 	class K, class V,
-	class Tomb,	
+	class Tomb,
 	class Eq = std::equal_to<void>,
 	class Alloc = std::allocator<hot_pair<K,V>>,
 	class Hash = std::hash<K>,
