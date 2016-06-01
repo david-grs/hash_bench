@@ -66,12 +66,25 @@ google::dense_hash_set<std::string> prepare_map<google::dense_hash_set<std::stri
     return m;
 }
 
+template <typename _MapT>
+std::string get_name()
+{
+    static std::string ret;
+    if (!ret.empty())
+        return ret;
+
+    char* str = __cxxabiv1::__cxa_demangle(typeid(_MapT).name(), nullptr, nullptr, nullptr);
+    ret = str;
+    free(str);
+
+    return ret;
+}
+
 template <typename _MapT, typename... Args>
-void add_to_benchmark(geiger::suite<Args...>& s)
+void add_insert_test(geiger::suite<Args...>& s)
 {
     auto m = prepare_map<_MapT>();
-    char* test_name = __cxxabiv1::__cxa_demangle(typeid(_MapT).name(), nullptr, nullptr, nullptr);
-    //std::cout << test_name << " " << m.bucket_count() << std::endl;
+    std::string test_name = std::string("insert: ") + get_name<_MapT>();
 
     s.add(test_name, [m = std::move(m)]()
     {
@@ -84,7 +97,6 @@ void add_to_benchmark(geiger::suite<Args...>& s)
             sum += m.size();
         }
     });
-    free(test_name);
 }
 
 int main()
@@ -93,12 +105,12 @@ int main()
     geiger::suite<> s;
     s.set_printer<geiger::printer::console<>>();
 
-    add_to_benchmark<std::set<std::string>>(s);
-    add_to_benchmark<std::unordered_set<std::string>>(s);
-    add_to_benchmark<google::dense_hash_set<std::string>>(s);
-    add_to_benchmark<hov_set<std::string>>(s);
-    add_to_benchmark<ht_chained<std::string>>(s);
-    add_to_benchmark<rigtorp::HashMap<std::string, int>>(s);
+    add_insert_test<std::set<std::string>>(s);
+    add_insert_test<std::unordered_set<std::string>>(s);
+    add_insert_test<google::dense_hash_set<std::string>>(s);
+    add_insert_test<hov_set<std::string>>(s);
+    add_insert_test<ht_chained<std::string>>(s);
+    add_insert_test<rigtorp::HashMap<std::string, int>>(s);
     s.run();
 
 	return 0;
