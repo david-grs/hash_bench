@@ -1,6 +1,8 @@
 #include "futils.h"
 #include "hot_set.h"
 #include "ht_chained.h"
+#include "x_hashmap/HashMap.h"
+
 #include <geiger/geiger.h>
 
 #include <set>
@@ -38,6 +40,17 @@ hov_set<std::string> prepare_map<hov_set<std::string>>()
     hov_set<std::string> m;
     for (const auto& v : get_dict_words())
         m.insert(v);
+    return m;
+}
+
+template <>
+rigtorp::HashMap<std::string, int> prepare_map<rigtorp::HashMap<std::string, int>>()
+{
+    rigtorp::HashMap<std::string, int> m(1, "");
+    m.reserve(get_dict_words().size());
+
+    for (const auto& v : get_dict_words())
+        m.emplace(v, 0);
     return m;
 }
 
@@ -85,6 +98,7 @@ int main()
     add_to_benchmark<google::dense_hash_set<std::string>>(s);
     add_to_benchmark<hov_set<std::string>>(s);
     add_to_benchmark<ht_chained<std::string>>(s);
+    add_to_benchmark<rigtorp::HashMap<std::string, int>>(s);
     s.run();
 
 	return 0;
