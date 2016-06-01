@@ -111,7 +111,7 @@ int main()
     add_insert_test<hov_set<std::string>>(s);
     add_insert_test<ht_chained<std::string>>(s);
     add_insert_test<rigtorp::HashMap<std::string, int>>(s);
-    s.run();
+    s.run(1);
 
 	return 0;
 }
