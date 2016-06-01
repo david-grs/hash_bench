@@ -99,6 +99,21 @@ void add_insert_test(geiger::suite<Args...>& s)
     });
 }
 
+template <typename _MapT, typename... Args>
+void add_erase_test(geiger::suite<Args...>& s)
+{
+    auto m = prepare_map<_MapT>();
+    std::string test_name = std::string("delete: ") + get_name<_MapT>();
+
+    s.add(test_name, [mn = std::move(m)]() mutable
+    {
+        const auto& values = get_dict_words();
+
+        for (const auto& v : values)
+            mn.erase(v);
+    });
+}
+
 int main()
 {
     geiger::init();
@@ -111,6 +126,13 @@ int main()
     add_insert_test<hov_set<std::string>>(s);
     add_insert_test<ht_chained<std::string>>(s);
     add_insert_test<rigtorp::HashMap<std::string, int>>(s);
+
+    add_erase_test<std::set<std::string>>(s);
+    add_erase_test<std::unordered_set<std::string>>(s);
+    add_erase_test<google::dense_hash_set<std::string>>(s);
+    add_erase_test<hov_set<std::string>>(s);
+    add_erase_test<rigtorp::HashMap<std::string, int>>(s);
+
     s.run(1);
 
 	return 0;
