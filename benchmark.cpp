@@ -8,6 +8,7 @@
 #include <set>
 #include <unordered_set>
 #include <google/dense_hash_set>
+#include <boost/container/flat_set.hpp>
 
 #include <cxxabi.h>
 
@@ -123,17 +124,21 @@ int main()
     add_insert_test<std::set<std::string>>(s);
     add_insert_test<std::unordered_set<std::string>>(s);
     add_insert_test<google::dense_hash_set<std::string>>(s);
+    add_insert_test<boost::container::flat_set<std::string>>(s);
     add_insert_test<hov_set<std::string>>(s);
     add_insert_test<ht_chained<std::string>>(s);
     add_insert_test<rigtorp::HashMap<std::string, int>>(s);
 
+    /*
     add_erase_test<std::set<std::string>>(s);
     add_erase_test<std::unordered_set<std::string>>(s);
     add_erase_test<google::dense_hash_set<std::string>>(s);
+    add_erase_test<boost::container::flat_set<std::string>>(s);
     add_erase_test<hov_set<std::string>>(s);
     add_erase_test<rigtorp::HashMap<std::string, int>>(s);
+    */
 
-    s.run(1);
+    s.run();
 
 	return 0;
 }
