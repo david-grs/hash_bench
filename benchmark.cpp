@@ -9,6 +9,7 @@
 #include <set>
 #include <unordered_set>
 #include <google/dense_hash_set>
+#include <google/sparse_hash_set>
 #include <boost/container/flat_set.hpp>
 
 #include <cxxabi.h>
@@ -125,6 +126,7 @@ int main()
     add_insert_test<std::set<std::string>>(s);
     add_insert_test<std::unordered_set<std::string>>(s);
     add_insert_test<google::dense_hash_set<std::string>>(s);
+    add_insert_test<google::sparse_hash_set<std::string>>(s);
     add_insert_test<boost::container::flat_set<std::string>>(s);
     add_insert_test<stx::btree_set<std::string>>(s);
     add_insert_test<hov_set<std::string>>(s);
