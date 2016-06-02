@@ -2,6 +2,7 @@
 #include "hot_set.h"
 #include "ht_chained.h"
 #include "x_hashmap/HashMap.h"
+#include "stx/btree_set.h"
 
 #include <geiger/geiger.h>
 
@@ -125,6 +126,7 @@ int main()
     add_insert_test<std::unordered_set<std::string>>(s);
     add_insert_test<google::dense_hash_set<std::string>>(s);
     add_insert_test<boost::container::flat_set<std::string>>(s);
+    add_insert_test<stx::btree_set<std::string>>(s);
     add_insert_test<hov_set<std::string>>(s);
     add_insert_test<ht_chained<std::string>>(s);
     add_insert_test<rigtorp::HashMap<std::string, int>>(s);
